@@ -10,10 +10,29 @@ class App extends Component {
       slowPickupCount: 0,
       slowPreOrderboardCount: 0,
       slowTimeMetric: 100,
-      mostRecentSlowTime: 100
+      mostRecentSlowTime: 100,
+      currentDay: 22,
+      tempCurrentDay: '22'
     }
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
+    this.setCurrentDay = this.setCurrentDay.bind(this);
+    this.submitCurrentDay = this.submitCurrentDay.bind(this);
+  }
+
+  setCurrentDay(e) {
+    e.preventDefault();
+    this.setState({tempCurrentDay: e.target.value});
+  }
+
+  submitCurrentDay(e) {
+    e.preventDefault();
+    let val = parseInt(this.state.tempCurrentDay);
+    if (isNaN(val) || val < 22 || val > 29) {
+      alert("Please input a proper value between 22 and 29");
+      return;
+    }
+    this.setState({currentDay: val});
   }
 
   handleTextChange(e) {
@@ -36,6 +55,9 @@ class App extends Component {
       let slowPickupCount = 0;
       let slowPreOrderboardCount = 0;
       for (let customer of data) {
+        let date = parseInt(customer.arrival_time.slice(8, 10));
+        if (date > this.state.currentDay) break;
+        if (date < this.state.currentDay) continue;
         if (customer.pickup > this.state.slowTimeMetric) {
           slowPickupCount++;
         }
@@ -63,13 +85,25 @@ class App extends Component {
               <input type="text" value={this.state.slowTimeMetric} onChange={this.handleTextChange}></input>
             </div>
           </label>
+          <label>
+            Choose a day between March 22 and March 29
+            <div>
+              March <input type="text" value={this.state.tempCurrentDay} onChange={this.setCurrentDay}/>
+              <button onClick={this.submitCurrentDay}>Enter Date</button>
+            </div>
+          </label>
           <form>
-            <button onClick={this.handleFileChange}>Update</button>
+            <button onClick={this.handleFileChange}>Process Data For March {this.state.currentDay}</button>
           </form>
           <div>
             {this.state.hasFile ? <div>
-              There are {this.state.slowPreOrderboardCount} customers who waited over {this.state.mostRecentSlowTime} units for someone to take their order.
-              There are {this.state.slowPickupCount} customers who waited over {this.state.mostRecentSlowTime} units after they placed their order.
+              On March {this.state.currentDay}:
+              <div>
+                There are {this.state.slowPreOrderboardCount} customers who waited over {this.state.mostRecentSlowTime} units for someone to take their order.
+              </div>
+              <div>
+                There are {this.state.slowPickupCount} customers who waited over {this.state.mostRecentSlowTime} units after they placed their order.
+              </div>
             </div> :null}
           </div>
         </div>
