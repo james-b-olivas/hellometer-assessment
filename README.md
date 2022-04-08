@@ -1,6 +1,3 @@
-# react-thcc-boilerplate
-Boilerplate code for take-home coding challenges in React. Utilizes Babel and Webpack.
+# Hellometer Assessment: Slow Time Checker
 
-To move code to the THCC's repo, utilize the following:
-
-https://gist.github.com/natedana/cc71d496b611e70673cab5e8f5a78485
+Taking in the CSV data from the function, we analyze the data, and figure out how many people have been waiting for too long.
