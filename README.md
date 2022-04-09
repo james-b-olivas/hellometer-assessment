@@ -2,9 +2,9 @@
 
 An app that takes in CSV data gathered by Hellometer, and analyzes it to determine how many people were left waiting for too long on a given day.
 
-Requirements:
+# Requirements:
 
-# Node (v.14.x)
+Node (v.14.x)
 
 # Setup Instructions
 
